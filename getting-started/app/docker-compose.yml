@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+    app:
+        image: node:12-alpine
+        command: sh -c "yarn install && yarn run dev"
+        ports:
+            - 3000:3000
+
+        environment:
+            MYSQL_HOST: mysql
+            MYSQL_USER: root
+            MYSQL_PASSWORD: secret
+            MYSQL_DB: todos
+
+        working_dir: /app
+        volumes:
+            - ./:/app
+
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - todo-vol:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: todos
+        platform: linux/amd64
+
+volumes:
+    todo-vol:
